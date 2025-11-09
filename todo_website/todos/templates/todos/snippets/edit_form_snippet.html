@@ -1,0 +1,39 @@
+{% load widget_tweaks %}
+<form action="{% url 'Update_Task' task_id %}" method="POST">
+  {% csrf_token %}
+  <div class="row mt-5">
+    <div class="col-1">
+      <label for="" class="form-label fs-5">{{ form_edit.title.label }}</label>
+    </div>
+    <div class="col-11">
+      {% render_field form_edit.title class+='form-control' %}
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-2">
+      <label for="" class="form-label fs-5">{{ form_edit.description.label }}</label>
+    </div>
+    <div class="col">
+      {% render_field form_edit.description rows='3' class+='form-control' %}
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-2">
+      <label for="" class="form-label fs-5">{{ form_edit.priority.label }}</label>
+    </div>
+    <div class="col">
+      {% render_field form_edit.priority class+='form-control' %}
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-2">
+      <label for="" class="form-label fs-5">{{ form_edit.due_date.label }}</label>
+    </div>
+    <div class="col">
+      {% render_field form_edit.due_date id='myDateInput' class+='form-control' %}
+    </div>
+  </div>
+  <div class="text-center mt-5">
+    <button type="submit" class="btn btn-primary btn-lg">Update</button>
+  </div>
+</form>

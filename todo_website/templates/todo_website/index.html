@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block main_content %}
+  <div class="px-4 py-5 my-5 text-center">
+    <img class="d-block mx-auto mb-4 rounded-5 rounded-top-0" src="{% static './website_imgs/logo.png' %}" alt="" width="72" height="67" /> <h1 class="display-5 fw-bold text-body-emphasis">Todo App</h1> <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">Keep Your All Tasks In One Place</p> <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a class="btn btn-primary btn-lg px-4 gap-3" href="{% url "Todos" %}" role="button">New Task</a>
+        <a class="btn btn-outline-secondary btn-lg px-4" href="{% url "Todos" %}" role="button">Check Tasks</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

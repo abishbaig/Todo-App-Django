@@ -1,0 +1,199 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% comment %}Todos Index File{% endcomment %}
+{% block main_content %}
+  <h1 class="bg-light text-center text-dark border rounded-bottom-5 bg-opacity-75">Welcome, {{ user.username|title }}</h1>
+  <div style="grid-template-columns: 1fr 1fr; height: 80vh;" class="d-grid gap-3 my-3 mx-3">
+    <div class="container border rounded-3 overflow-auto" style="height: 85%;">
+      <div class="container my-2 w-60 p-3">
+        <h1 class="bg-success text-center text-light border rounded-5 bg-opacity-75">Add New Task</h1>
+        <form action="#" method="POST" class="form w-60">
+          {% csrf_token %}
+          <div class="row mt-5">
+            <div class="col-1">
+              <label for="" class="form-label fs-5">{{ form.title.label }}</label>
+            </div>
+            <div class="col-11">
+              {% render_field form.title class+='form-control' %}
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-2">
+              <label for="" class="form-label fs-5">{{ form.description.label }}</label>
+            </div>
+            <div class="col">
+              {% render_field form.description rows='3' class+='form-control' %}
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-2">
+              <label for="" class="form-label fs-5">{{ form.priority.label }}</label>
+            </div>
+            <div class="col">
+              {% render_field form.priority class+='form-control' %}
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-2">
+              <label for="" class="form-label fs-5">{{ form.due_date.label }}</label>
+            </div>
+            <div class="col">
+              {% render_field form.due_date id='myDateInput' class+='form-control' %}
+            </div>
+          </div>
+          <div class="text-center mt-5">
+            <button type="submit" class="btn btn-warning btn-lg">Add Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container border rounded-3 overflow-auto bg-body-tertiary" style="height: 85%;">
+      <div class="container my-2 w-60 p-3">
+        <div style="grid-template-columns: 1fr;" class="d-grid gap-3">
+          <h1 class="bg-info text-center text-dark border rounded-5 bg-opacity-75">All Tasks</h1>
+          {% for task in tasks %}
+            <div class="container border border-3 rounded-2 pb-1">
+              {% if task.completed %}
+                <div class="row mt-2">
+                  <div class="col-10">
+                    <h4 class="text-secondary"><del>{{ task.title }}</del></h4>
+                  </div>
+                  <div class="col">
+                    <form action="{% url 'Delete_Task' task.id %}" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                  </div>
+                </div>
+                <hr />
+                <h5 class="text-secondary"><del>{{ task.priority }}</del></h5>
+                <h6 class="text-secondary"><del>{{ task.due_date }}</del></h6>
+                <a href="{% url "Complete_Task" task.id %}" class="text-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
+                  </svg>
+                </a>
+              {% else %}
+                <div class="row mt-2">
+                  <div class="col-8">
+                    <h4 class="text-light">{{ task.title }}</h4>
+                  </div>
+                  <div class="col">
+                    <!-- Button trigger modal to Edit a Task -->
+                    <button type="button" class="btn btn-primary px-4 edit-task-btn" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editTaskModal" 
+                            data-task-id="{{ task.id }}"> Edit
+                    </button>
+                    <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="editFormContent"> 
+                                    Loading form...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <!-- Button trigger modal to delete a Task -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop_delete_{{task.id}}">
+                      Delete
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop_delete_{{task.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete Task</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Are You <i>sure</i> you want to <b>Delete</b> The Task?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <form action="{% url 'Delete_Task' task.id %}" method="POST" style="display: inline;">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                {% if task.priority|lower == "low" %}
+                <h5 class="text-primary opacity-75">{{ task.priority }}</h5>
+                {% elif task.priority|lower == "medium" %}
+                <h5 class="text-warning">{{ task.priority }}</h5>
+                {% elif task.priority|lower == "high" %}
+                <h5  class="text-danger">{{ task.priority }}</h5>
+                {% endif %}
+                <h6 class="text-success">{{ task.due_date }}</h6>
+                <a href="{% url "Complete_Task" task.id %}" class="btn btn-outline-primary" style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">
+                  <svg style="visibility: hidden;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-app" viewBox="0 0 16 16">
+                    <path d="M11 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3zM5 1a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4z" />
+                  </svg>
+                </a>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.js" type="text/javascript"></script>
+  <script>
+    // Get the input element
+    const dateInput = document.getElementById('myDateInput')
+    
+    // Get the current date
+    const today = new Date()
+    
+    // Format the date to YYYY-MM-DD
+    const year = today.getFullYear()
+    // Month is 0-indexed, so add 1 and pad with a leading zero if necessary
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    // Pad day with a leading zero if necessary
+    const day = String(today.getDate()).padStart(2, '0')
+    
+    const formattedDate = `${year}-${month}-${day}`
+    
+    // Set the value of the input
+    dateInput.value = formattedDate
+
+    $(document).ready(function() {
+        $('.edit-task-btn').on('click', function() {
+            var taskId = $(this).data('task-id');
+            var url = "{% url 'Get_Edit_Form' 0 %}".replace('0', taskId); // 🎯 Correctly builds the URL
+
+            // Show 'Loading' message
+            $('#editFormContent').html('Loading form...');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    // Inject the received HTML form into the modal body
+                    $('#editFormContent').html(response.html_form);
+                },
+                error: function(xhr, status, error) {
+                    $('#editFormContent').html('<p class="text-danger">Error loading form. Please try again.</p>');
+                    console.error("AJAX Error:", error);
+                }
+            });
+        });
+    });
+  </script>
+{% endblock %}

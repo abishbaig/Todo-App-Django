@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% load widget_tweaks %}
+
+{% block main_content %}
+    
+<div class="container my-1 text-center border rounded-2 w-50 overflow-auto" style="height: 50%;">
+    <h1 class="mb-4 ms-0">Register</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger text-light" role="alert">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row mt-5">
+            <div class="col-2">
+                <label for="" class="form-label fs-6">{{ form.username.label }}</label>
+            </div>
+            <div class="col-8">
+                {% if form.username.errors %}
+                    {% render_field form.username class+='form-control is-invalid' %}
+                {% else %}
+                    {% render_field form.username class+='form-control' %}
+                {% endif %}
+                {% for error in form.username.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row mt-5">
+                <div class="col-2">
+                    <label for="" class="form-label fs-6">{{ form.password1.label }}</label>
+                </div>
+                <div class="col-8">
+                    {% if form.password1.errors %}
+                        {% render_field form.password1 class+='form-control is-invalid' %}
+                    {% else %}
+                        {% render_field form.password1 class+='form-control' %}
+                    {% endif %}
+                    {% for error in form.password1.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-2">
+                    <label for="" class="form-label fs-6">{{ form.password2.label }}</label>
+                </div>
+                <div class="col-8">
+                    {% if form.password2.errors %}
+                        {% render_field form.password2 class+='form-control is-invalid' %}
+                    {% else %}
+                        {% render_field form.password2 class+='form-control' %}
+                    {% endif %}
+                    {% for error in form.password2.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg my-5">Register</button>
+    </form>
+</div>
+{% endblock %}

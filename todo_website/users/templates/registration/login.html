@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Login User{% endblock %}
+
+{% block main_content %}
+
+<div class="container my-5 text-center border rounded-2 w-50">
+        <h1 class="mb-4 ms-0">Login</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger text-light" role="alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+                </div>
+            {% endif %}
+            <div class="row mt-5">
+                <div class="col-3">
+                    <label for="" class="form-label fs-5">{{ form.username.label }}</label>
+                </div>
+                <div class="col-9">
+                    {% if form.username.errors %}
+                        {% render_field form.username class+='form-control is-invalid' %}
+                    {% else %}
+                        {% render_field form.username class+='form-control' %}
+                    {% endif %}
+                    {% for error in form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-3">
+                    <label for="" class="form-label fs-5">{{ form.password.label }}</label>
+                </div>
+                <div class="col-9">
+                    {% if form.password.errors %}
+                        {% render_field form.password class+='form-control is-invalid' %}
+                    {% else %}
+                        {% render_field form.password class+='form-control' %}
+                    {% endif %}
+                    {% for error in form.password.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg my-5">Login</button>
+        </form>
+    </div>
+{% endblock %}
