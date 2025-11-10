@@ -1,4 +1,4 @@
-# Todo App Made Using Django
+# Todo App - Django
 
 ## Description  
 A web-based **Todo Application** built with **Django Framework** that allows users to manage their personal tasks efficiently.  
@@ -10,7 +10,7 @@ The app uses **Django Widget Tweaks** for form customization and **Bootstrap** f
 ## Features
 
 - User **registration and login system** using Django’s built-in authentication.
-- Each user can **Add, Update, Delete, and Mark tasks as Complete**.
+- Each user can **Add, Update, Delete, Set Priority, and Mark tasks as Complete**.
 - Tasks are **user-specific**, ensuring privacy and data separation.
 - **Django Widget Tweaks** used for customizing form design.
 - **Bootstrap** integrated for a modern, responsive UI.
@@ -67,3 +67,8 @@ The app uses **Django Widget Tweaks** for form customization and **Bootstrap** f
     ```bash
     python manage.py runserver
 
+## Authors
+Muhammad Abish Baig
+
+## License
+[MIT](LICENSE)
