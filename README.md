@@ -1,5 +1,7 @@
 # Todo App - Django
 
+![alt text](images/home.png)
+
 ## Description  
 A web-based **Todo Application** built with **Django Framework** that allows users to manage their personal tasks efficiently.  
 It includes secure **user authentication (login & registration)**, ensuring that each user can **only view and manage their own tasks**.  
